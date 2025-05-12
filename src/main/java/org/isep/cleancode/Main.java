@@ -1,13 +1,19 @@
 package org.isep.cleancode;
 
+import org.isep.cleancode.application.TodoManager;
+import org.isep.cleancode.persistence.TodoRepository;
+import org.isep.cleancode.presentation.TodoController;
+
 import static spark.Spark.*;
-import com.google.gson.Gson;
 
 public class Main {
-    private static final TodoController todoController = new TodoController();
 
     public static void main(String[] args) {
         port(4567);
+
+        TodoRepository todoRepository = new TodoRepository();
+        TodoManager todoManager = new TodoManager(todoRepository);
+        TodoController todoController = new TodoController(todoManager);
 
         get("/todos", todoController::getAllTodos);
 
